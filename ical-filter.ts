@@ -10,7 +10,7 @@ function isValid (checkString: string, bads: string[]): boolean {
   return true
 }
 
-export async function icalFilter (sourceURL: string, filters: string[]) {
+export async function icalFilter (sourceURL: string, titleFilters: string[], yearFilters: string[] = []) {
   const cal = await icalParse.fromURL(sourceURL)
 
   const newCal = icalCalendar({ name: 'ICL Calendar Feed' })
@@ -20,7 +20,11 @@ export async function icalFilter (sourceURL: string, filters: string[]) {
 
     if (item.type !== 'VEVENT') continue
 
-    if (!isValid(item.summary, filters)) {
+    if (!isValid(item.summary, titleFilters)) {
+      continue
+    }
+
+    if (!isValid(item.start.getFullYear().toString(), yearFilters)){
       continue
     }
 

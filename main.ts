@@ -6,7 +6,8 @@ const server = createServer(async (req, res) => {
   const queryParams = parse(req.url ?? '', true).query
 
   const sourceURL: string | string[] | undefined = queryParams.source
-  const filter: string | string[] | undefined = queryParams.filter
+  const titleFilter: string | string[] | undefined = queryParams.titleFilter
+  const yearFilter: string | string[] | undefined = queryParams.yearFilter
 
   if (sourceURL === undefined || typeof sourceURL !== 'string') {
     res.writeHead(400)
@@ -14,16 +15,23 @@ const server = createServer(async (req, res) => {
     return
   }
 
-  if (filter === undefined || typeof filter !== 'string') {
+  if (titleFilter === undefined || typeof titleFilter !== 'string') {
     res.writeHead(400)
-    res.end('filter is undefined or not a string')
+    res.end('titleFilter is undefined or not a string')
     return
   }
 
-  const filters = filter.split(',')
+  if (yearFilter !== undefined && typeof yearFilter !== 'string') {
+    res.writeHead(400)
+    res.end('yearFilter is not a string')
+    return
+  }
+
+  const titleFilters = titleFilter.split(',')
+  const yearFilters = yearFilter?.split(',') ?? []
 
   try {
-    const result = await icalFilter(sourceURL, filters)
+    const result = await icalFilter(sourceURL, titleFilters, yearFilters)
     res.writeHead(200)
     res.end(result)
     return
