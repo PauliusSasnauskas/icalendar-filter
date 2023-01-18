@@ -21,10 +21,10 @@ npm start
 ## Usage
 
 Specify the original calendar feed in the `source` query parameter.
-Specify a comma separated string list what to filter out in the `filter` query parameter.
+Specify a comma separated string list what titles to filter out in the `titleFilter` query parameter, years – `yearFilter`.
 
 For example, this server is hosted on `https://icalendar-filter.vercel.app/api/main`, source feed is `https://www.mysite.com/mytimetable/AB3D567H/schedule.ics`, undesired events contain strings `COMP70000` and `New Year`, then pull from the url:
 
 ```
-https://icalendar-filter.vercel.app/api/main?source=https://www.mysite.com/mytimetable/AB3D567H/schedule.ics&filter=COMP70000,New%20Year
+https://icalendar-filter.vercel.app/api/main?source=https://www.mysite.com/mytimetable/AB3D567H/schedule.ics&titleFilter=COMP70000,New%20Year
 ```
